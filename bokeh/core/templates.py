@@ -18,9 +18,20 @@ from __future__ import absolute_import
 
 import json
 
-from jinja2 import Environment, PackageLoader, Markup
+from jinja2 import Environment, PackageLoader, Markup, FileSystemLoader
 
-_env = Environment(loader=PackageLoader('bokeh.core', '_templates'))
+#DD_env = Environment(loader=PackageLoader('bokeh.core', '_templates'))
+""" my new code here
+"""
+import os,sys
+import bokeh
+
+bokeh_path = sys.modules['bokeh.core'].__path__[0]
+print('bokeh_path ' + bokeh_path)
+_env = Environment(loader=FileSystemLoader(os.path.join(bokeh_path, '_templates')))
+""" end of my new code
+"""
+
 _env.filters['json'] = lambda obj: Markup(json.dumps(obj))
 
 JS_RESOURCES = _env.get_template("js_resources.html")
